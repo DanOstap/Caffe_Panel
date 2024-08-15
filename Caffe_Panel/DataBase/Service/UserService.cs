@@ -21,26 +21,26 @@ namespace Caffe_Panel.DataBase.Service
         {
             _configuration = configuration;
         }
-        async public Task<User> CreateUser(User model) {
+        public async Task<User> CreateUser(User model) {
            var user = await _configuration.User.AddAsync(model);
             await _configuration.SaveChangesAsync();
             return model;
         }
-        async public Task<List<User>?> FindAll() {
+        public async Task<List<User>> FindAll() {
             if (_configuration.User == null) return null;
             return await _configuration.User.ToListAsync();
         }
-        async public Task<User?> FindOneById(int id) {
+        public async Task<User> FindOneById(int id) {
             var user = await _configuration.User.FindAsync(id);
             if (user != null) return user;
             return null;
         }
-        async public Task<User?> FindOneByName(string name) {
+        public async Task<User> FindOneByName(string name) {
             var user = await _configuration.User.Where(i => i.Name_Subname == name).FirstOrDefaultAsync();
             if (user != null) return user;
             return null;
         }
-        async public Task<User?> Update(int id, User model) {
+        public async Task<User> Update(int id, User model) {
             var user = await _configuration.User.FindAsync(id);
             if (user != null) {
                 _configuration.Entry(model).State = EntityState.Modified;
@@ -55,7 +55,7 @@ namespace Caffe_Panel.DataBase.Service
            }
             return null;
         }
-        async public  Task<User?> RemoveById(int id) {
+        public async  Task<User> RemoveById(int id) {
             var user = await _configuration.User.FindAsync(id);
             if (user != null) {
                 _configuration.User.Remove(user);
@@ -63,7 +63,7 @@ namespace Caffe_Panel.DataBase.Service
             }
             return null;
         }
-        async public Task<User?> RemoveByName(string name) {
+        public async Task<User> RemoveByName(string name) {
             var user = await _configuration.User.Where(i => i.Name_Subname == name).FirstOrDefaultAsync();
             if (user != null)
             {
