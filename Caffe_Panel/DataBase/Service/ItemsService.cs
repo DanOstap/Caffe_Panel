@@ -45,11 +45,28 @@ namespace Caffe_Panel.DataBase.Service
         {
             if (Discount_From != null && Discount_To != null)
             {
-                var items = await _configuration.Items
-                    .Where(i => i.Product_Discount > Discount_From &&
-                                i.Product_Discount < Discount_To)
-                    .ToListAsync();
-                return items;
+                if (Discount_From > Discount_To)
+                {
+
+                    var items = await _configuration.Items
+                        .Where(i => i.Product_Discount > Discount_From &&
+                                    i.Product_Discount < Discount_To)
+                        .ToListAsync();
+                    return items;
+                }
+                if (Discount_From < Discount_To) {
+                    var items = await _configuration.Items
+                           .Where(i => i.Product_Discount > Discount_To &&
+                                       i.Product_Discount < Discount_From)
+                           .ToListAsync();
+                    return items;
+                }
+                if (Discount_To == Discount_From) {
+                    var items = await _configuration.Items
+                              .Where(i => i.Product_Discount == Discount_To)
+                              .ToListAsync();
+                    return items;
+                }
             }
             return null;
         }
